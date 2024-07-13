@@ -9,6 +9,7 @@ import { IterationCcw } from "lucide-react-native";
 import { hexToString } from 'viem';
 import { WebView } from 'react-native-webview';
 import TwitterPreview from 'react-native-twitter-preview';
+import TwitterEmbed from "~/components/TwitterEmbed";
 
 const ListItem = ({ item, index }: { item: Creates; index: number }) => {
   return (
@@ -22,10 +23,11 @@ const ListItem = ({ item, index }: { item: Creates; index: number }) => {
             url={`https://x.com/DrKristieLeong/status/1811367340010803528`}
             backgroundColor={'#272A35'}
           /> */}
+          <TwitterEmbed tweetUrl={`https://x.com/DrKristieLeong/status/1811367340010803528`} />
         </View>
       </Link>
       <View className="flex-row">
-        <Button variant="outline" size="sm" onpress={ }>buy</Button>
+        <Button variant="outline" size="sm" onPress={{}}>buy</Button>
         <Button variant="outline" size="sm">sell</Button>
         <View>
           <Text>price: $0.01</Text>
