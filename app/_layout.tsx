@@ -1,4 +1,10 @@
 import "~/global.css";
+import 'fast-text-encoding';
+import 'react-native-get-random-values';
+import '@ethersproject/shims';
+
+// Import the PrivyProvider
+import { PrivyProvider } from '@privy-io/expo';
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Theme, ThemeProvider } from "@react-navigation/native";
@@ -15,6 +21,8 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { Text } from "~/components/ui/text";
 import Toast from "react-native-toast-message";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { config } from "~/lib/config";
+import { WagmiProvider } from "wagmi";
 
 const LIGHT_THEME: Theme = {
   dark: false,
@@ -69,46 +77,51 @@ export default function RootLayout() {
   const queryClient = new QueryClient();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-        <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <BottomSheetModalProvider>
-            <Stack
-              initialRouteName="(tabs)"
-              screenOptions={{
-                headerBackTitle: "Back",
-                headerTitle(props) {
-                  return (
-                    <Text className="text-xl font-semibold">
-                      {toOptions(props.children)}
-                    </Text>
-                  );
-                },
-                headerRight: () => <ThemeToggle />,
-              }}
-            >
-              <Stack.Screen
-                name="(tabs)"
-                options={{
-                  headerShown: false,
-                }}
-              />
+    <PrivyProvider appId={process.env.EXPO_PUBLIC_PRIVY_APPID ?? ""}>
+      <WagmiProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+            <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <BottomSheetModalProvider>
+                <Stack
+                  initialRouteName="(tabs)"
+                  screenOptions={{
+                    headerBackTitle: "Back",
+                    headerTitle(props) {
+                      return (
+                        <Text className="text-xl font-semibold">
+                          {toOptions(props.children)}
+                        </Text>
+                      );
+                    },
+                    headerRight: () => <ThemeToggle />,
+                  }}
+                >
+                  <Stack.Screen
+                    name="(tabs)"
+                    options={{
+                      headerShown: false,
+                    }}
+                  />
 
-              {/* <Stack.Screen
+                  {/* <Stack.Screen
               name='modal'
               options={{
                 presentation: 'modal',
                 title: 'Modal',
               }}
             /> */}
-            </Stack>
-          </BottomSheetModalProvider>
-          <PortalHost />
-        </GestureHandlerRootView>
-        <Toast />
-      </ThemeProvider>
-    </QueryClientProvider>
+                </Stack>
+              </BottomSheetModalProvider>
+              <PortalHost />
+            </GestureHandlerRootView>
+            <Toast />
+          </ThemeProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
+
+    </PrivyProvider>
   );
 }
 

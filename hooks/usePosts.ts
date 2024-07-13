@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import {request, gql} from "graphql-request";
+import { request, gql } from "graphql-request";
 // Define your types
 export type Creates = {
   id: string;
@@ -26,22 +26,15 @@ export type Trades = {
 
 // Function to fetch posts
 
-
 export function usePosts(page: number = 1, limit: number = 15) {
   const endpoint = process.env.EXPO_PUBLIC_THE_GRAPH_ENDPOINT;
   if (!endpoint) {
     throw new Error("The Graph endpoint is not defined in environment variables");
   }
-  return useQuery({
-    queryKey: ['posts'],
-    queryFn: async () => {
-      const {
-        posts: { data },
-      } = await request(
-        endpoint,
-        gql`
-    query {
-      creates(first: limit, skip: (page - 1) * limit, orderBy: blockTimestamp, orderDirection: desc){
+
+  const query = gql`
+    query GetPosts($limit: Int!, $skip: Int!) {
+      creates(first: $limit, skip: $skip, orderBy: blockTimestamp, orderDirection: desc) {
         id
         assetId
         sender
@@ -49,9 +42,19 @@ export function usePosts(page: number = 1, limit: number = 15) {
         blockNumber
         blockTimestamp
       }
-    }`
-      )
-      return data.data.creates as Creates[]
     }
-  })
+  `;
+
+  const variables = {
+    limit,
+    skip: (page - 1) * limit
+  };
+
+  return useQuery({
+    queryKey: ['posts', page, limit], queryFn: async () => {
+      const data = await request(endpoint, query, variables);
+      console.log("data ============", data)
+      return data.creates as Creates[];
+    }
+  });
 }

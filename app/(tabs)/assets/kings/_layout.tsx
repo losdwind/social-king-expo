@@ -1,8 +1,7 @@
-import { View, Text } from 'react-native'
 import React from 'react'
 import { Stack } from 'expo-router'
 
-export default function WalletLayout() {
+export default function KingsLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }} />
   )
