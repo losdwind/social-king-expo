@@ -11,9 +11,7 @@ import { WebView } from 'react-native-webview';
 import TwitterPreview from 'react-native-twitter-preview';
 import TwitterEmbed from "~/components/TwitterEmbed";
 import { Tweet } from "rn-tweet-embed";
-// import { ProfileHeader } from "react-native-twitter-embed";
-import { XEmbed } from "react-social-media-embed";
-
+import { XEmbed } from 'react-social-media-embed';
 const ListItem = ({ item, index }: { item: Creates; index: number }) => {
   return (
     <View key={item.id} className="flex-1 p-4 border-b border-gray-200">
@@ -23,16 +21,10 @@ const ListItem = ({ item, index }: { item: Creates; index: number }) => {
           {/* <WebView source={{ uri: hexToString(item.arTxId as `0x{string}`) }} /> */}
           {/* <WebView source={{ uri: `https://x.com/DrKristieLeong/status/1811367340010803528` }} /> */}
           {/* <TwitterPreview
-            url={hexToString(item.arTxId as `0x{string}`)} /> */}
+            url={`https://x.com/DrKristieLeong/status/1811367340010803528`} /> */}
           {/* <TwitterEmbed tweetUrl={hexToString(item.arTxId as `0x{string}`)} /> */}
-          {/* <Text className="bg-white">here is a tweet embed</Text> */}
+          <XEmbed url={hexToString(item.arTxId as `0x{string}`)} />
           <Tweet tweetUrl={hexToString(item.arTxId as `0x{string}`)} />
-          {/* <XEmbed url={hexToString(item.arTxId as `0x{string}`)} /> */}
-
-          {/* Platform.OS === 'web' ? <TwitterEmbed tweetUrl={hexToString(item.arTxId as `0x{string}`)} /> : <Tweet tweetUrl={hexToString(item.arTxId as `0x{string}`)} /> */}
-          {/* <ProfileHeader
-            mention="cawfree"
-          /> */}
         </View>
       </Link>
       <View className="flex-row">

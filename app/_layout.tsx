@@ -77,51 +77,50 @@ export default function RootLayout() {
   const queryClient = new QueryClient();
 
   return (
-    <PrivyProvider appId={process.env.EXPO_PUBLIC_PRIVY_APPID ?? ""}>
-      <WagmiProvider config={config}>
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-            <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-            <GestureHandlerRootView style={{ flex: 1 }}>
-              <BottomSheetModalProvider>
-                <Stack
-                  initialRouteName="(tabs)"
-                  screenOptions={{
-                    headerBackTitle: "Back",
-                    headerTitle(props) {
-                      return (
-                        <Text className="text-xl font-semibold">
-                          {toOptions(props.children)}
-                        </Text>
-                      );
-                    },
-                    headerRight: () => <ThemeToggle />,
-                  }}
-                >
-                  <Stack.Screen
-                    name="(tabs)"
-                    options={{
-                      headerShown: false,
-                    }}
-                  />
+    // <PrivyProvider appId={process.env.EXPO_PUBLIC_PRIVY_APPID ?? ""}>
+    // <WagmiProvider config={config}>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+        <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <BottomSheetModalProvider>
+            <Stack
+              initialRouteName="(tabs)"
+              screenOptions={{
+                headerBackTitle: "Back",
+                headerTitle(props) {
+                  return (
+                    <Text className="text-xl font-semibold">
+                      {toOptions(props.children)}
+                    </Text>
+                  );
+                },
+                headerRight: () => <ThemeToggle />,
+              }}
+            >
+              <Stack.Screen
+                name="(tabs)"
+                options={{
+                  headerShown: false,
+                }}
+              />
 
-                  {/* <Stack.Screen
+              {/* <Stack.Screen
               name='modal'
               options={{
                 presentation: 'modal',
                 title: 'Modal',
               }}
             /> */}
-                </Stack>
-              </BottomSheetModalProvider>
-              <PortalHost />
-            </GestureHandlerRootView>
-            <Toast />
-          </ThemeProvider>
-        </QueryClientProvider>
-      </WagmiProvider>
-
-    </PrivyProvider>
+            </Stack>
+          </BottomSheetModalProvider>
+          <PortalHost />
+        </GestureHandlerRootView>
+        <Toast />
+      </ThemeProvider>
+    </QueryClientProvider>
+    //{/* </WagmiProvider> */ }
+    // </PrivyProvider>
   );
 }
 

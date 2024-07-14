@@ -4,9 +4,7 @@ import React from 'react'
 export default function Dashboard() {
   return (
     <View>
-      <Text>Dashboard
-    
-      </Text>
+      <Text>Dashboard</Text>
     </View>
   )
 }
