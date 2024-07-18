@@ -8,8 +8,8 @@ export default function TwitterEmbed({ tweetUrl }: { tweetUrl: string }) {
     useEffect(() => {
         const setupEmbed = async () => {
             try {
-                const tweetApiUrl = `http://localhost:3000/oembed?url=${encodeURIComponent(tweetUrl)}`;
-                // const tweetApiUrl = `https://publish.twitter.com/oembed?url=8======D{}`;
+                // const tweetApiUrl = `http://localhost:3000/oembed?url=${encodeURIComponent(tweetUrl)}`;
+                const tweetApiUrl = `https://publish.twitter.com/oembed?url=${encodeURIComponent(tweetUrl)}`;
                 console.log("tweetApiUrl", tweetApiUrl);
                 const response = await fetch(tweetApiUrl, {
                     method: 'GET',

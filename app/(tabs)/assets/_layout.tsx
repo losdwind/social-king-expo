@@ -12,6 +12,7 @@ import {
   useTheme,
 } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { autoScroll } from "@shopify/flash-list";
 const { Navigator } = createMaterialTopTabNavigator();
 
 const MaterialTopTabs = withLayoutContext<
@@ -29,6 +30,9 @@ export default function MaterialTopTabsLayout() {
     <MaterialTopTabs
       initialRouteName="hot"
       screenOptions={{
+        tabBarContentContainerStyle: {
+          borderColor: "#fff",
+        },
         tabBarActiveTintColor: colors.text,
         tabBarInactiveTintColor: "grey",
         tabBarLabelStyle: {
@@ -40,6 +44,13 @@ export default function MaterialTopTabsLayout() {
           backgroundColor: colors.text,
           width: 0.5,
           height: 3,
+        },
+        tabBarStyle: {
+          width: 'auto',
+          alignSelf: "center",
+          elevation: 0, // Remove shadow on Android
+          shadowOpacity: 0, // Remove shadow on iOS
+          borderBottomWidth: 0, // Remove the bottom border if there is one
         },
         tabBarScrollEnabled: true,
         tabBarItemStyle: { width: "auto", minWidth: 50 },
