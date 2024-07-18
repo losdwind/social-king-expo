@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import React from "react";
 import { request, gql } from "graphql-request";
 // Define your types
@@ -26,7 +26,7 @@ export type Trades = {
 
 // Function to fetch posts
 
-export function usePosts(page: number = 1, limit: number = 15) {
+export function usePosts(limit: number = 15) {
   const endpoint = process.env.EXPO_PUBLIC_THE_GRAPH_ENDPOINT;
   if (!endpoint) {
     throw new Error("The Graph endpoint is not defined in environment variables");
@@ -45,16 +45,21 @@ export function usePosts(page: number = 1, limit: number = 15) {
     }
   `;
 
-  const variables = {
-    limit,
-    skip: (page - 1) * limit
-  };
 
-  return useQuery({
-    queryKey: ['posts', page, limit], queryFn: async () => {
+  return useInfiniteQuery({
+    queryKey: ['posts', limit], queryFn: async ({ pageParam = 1 }) => {
+      const variables = {
+        limit,
+        skip: (pageParam - 1) * limit
+      };
       const data = await request(endpoint, query, variables);
-      console.log("data ============", data)
       return data.creates as Creates[];
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.length < limit) {
+        return undefined;
+      }
+      return allPages.length + 1;
     }
   });
 }

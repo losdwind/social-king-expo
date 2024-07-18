@@ -1,5 +1,5 @@
-import { View, Text, Dimensions } from "react-native";
-import React from "react";
+import { View, Text, Dimensions, ActivityIndicator } from "react-native";
+import React, { useEffect, useState } from "react";
 import { FlashList } from "@shopify/flash-list";
 import { Button } from "~/components/ui/button";
 import { Link, Stack } from "expo-router";
@@ -40,18 +40,29 @@ const ListItem = ({ item, index }: { item: Creates; index: number }) => {
 };
 
 export default function HotList() {
-
-  const { data, error, isLoading, isError } = usePosts(1, 10);
+  const [page, setPage] = useState(1);
+  const [posts, setPosts] = useState();
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const { data, error, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } = usePosts(5);
+  console.log(data)
   const screenWidth = Dimensions.get('window').width;
   const numColumns = Math.floor(screenWidth / 500); // Adjust the threshold as needed
 
+  const loadMore = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
+  useEffect(() => {
+    console.log("data--->", data)
+  }, [])
 
   if (isLoading) return <Text>Loading...</Text>;
   if (isError) return <Text>{error.message}</Text>;
 
   return (
     <View className="flex-1 p-4">
-      <FlashList renderItem={ListItem} data={data} keyExtractor={(item) => item.arTxId} numColumns={numColumns} />
+      <FlashList renderItem={ListItem} data={data.pages.flatMap((page) => page)} keyExtractor={(item) => item.arTxId} numColumns={numColumns} onEndReached={loadMore} onEndReachedThreshold={0.8} ListFooterComponent={isFetchingMore ? <ActivityIndicator size="large" color="#0000ff" /> : null} />
     </View>
   );
 }
